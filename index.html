@@ -85,6 +85,9 @@
 </head>
 <body>
 
+  <!-- Scroll Progress Indicator -->
+  <div id="scroll-progress"></div>
+
   <!-- Dynamic Network Particle Canvas Background -->
   <canvas id="canvas-bg"></canvas>
 
@@ -97,6 +100,7 @@
         <ul class="nav-links">
           <li><a href="#home" class="active">Home</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="#lab">Lab</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#certs">Certs</a></li>
@@ -211,10 +215,103 @@
     </div>
   </div>
 
+  <!-- System Resilience & Automation Lab Section -->
+  <section id="lab" class="reveal">
+    <div class="section-header reveal">
+      <span class="section-num">02. Interactive Simulation</span>
+      <h2 class="section-title">Resilience & Automation Lab</h2>
+    </div>
+    <p class="section-intro reveal" style="max-width: 800px; margin-bottom: 2.5rem; color: var(--text-secondary);">
+      Experience a real-time interactive simulation of IT service continuity, disaster recovery failover, and self-healing automated workflows. Select an operation to see how I architect systems to withstand outage scenarios.
+    </p>
+    
+    <div class="lab-grid reveal">
+      <!-- Left side: Live Topology & Uptime Monitor -->
+      <div class="lab-monitor">
+        <div class="monitor-header">
+          <div class="monitor-title"><i class="fas fa-heartbeat"></i> Active Infrastructure Monitor</div>
+          <div class="system-sla">SLA: <span id="sla-value">99.98%</span></div>
+        </div>
+        
+        <div class="server-nodes">
+          <div class="server-node" id="node-vmware">
+            <div class="node-icon"><i class="fas fa-server"></i></div>
+            <div class="node-info">
+              <span class="node-name">VMware ESXi Host</span>
+              <span class="node-status" id="status-vmware">Online</span>
+            </div>
+            <div class="node-led led-green" id="led-vmware"></div>
+          </div>
+          
+          <div class="server-node" id="node-db">
+            <div class="node-icon"><i class="fas fa-database"></i></div>
+            <div class="node-info">
+              <span class="node-name">Production DB Cluster</span>
+              <span class="node-status" id="status-db">Online</span>
+            </div>
+            <div class="node-led led-green" id="led-db"></div>
+          </div>
+          
+          <div class="server-node" id="node-n8n">
+            <div class="node-icon"><i class="fas fa-network-wired"></i></div>
+            <div class="node-info">
+              <span class="node-name">n8n Automation Gateway</span>
+              <span class="node-status" id="status-n8n">Online</span>
+            </div>
+            <div class="node-led led-green" id="led-n8n"></div>
+          </div>
+          
+          <div class="server-node" id="node-ai">
+            <div class="node-icon"><i class="fas fa-brain"></i></div>
+            <div class="node-info">
+              <span class="node-name">AI Operations Agent</span>
+              <span class="node-status" id="status-ai">Online</span>
+            </div>
+            <div class="node-led led-green" id="led-ai"></div>
+          </div>
+        </div>
+        
+        <div class="metrics-mini-grid">
+          <div class="metric-box">
+            <span class="m-label">Active Replication</span>
+            <span class="m-val" id="val-rep">Zerto CDP (0.8s RPO)</span>
+          </div>
+          <div class="metric-box">
+            <span class="m-label">Active Recovery Objective</span>
+            <span class="m-val" id="val-rto">Nominal (Standby)</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right side: Console logs and interactive controls -->
+      <div class="lab-terminal">
+        <div class="terminal-header">
+          <div class="terminal-buttons">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="terminal-title">resilience-engine@erwnlf.dev:~</div>
+        </div>
+        <div class="terminal-body-console" id="console-logs">
+          <div class="log-line system-log">> Resilience simulator initialized. System status: NOMINAL.</div>
+          <div class="log-line system-log">> Monitoring replication pipelines, backup status, and host health...</div>
+        </div>
+        <div class="terminal-controls">
+          <button class="lab-btn btn-outage" id="btn-simulate-outage"><i class="fas fa-exclamation-triangle"></i> Simulate Outage</button>
+          <button class="lab-btn btn-zerto" id="btn-run-zerto" disabled><i class="fas fa-shield-alt"></i> Run Zerto Failover</button>
+          <button class="lab-btn btn-n8n" id="btn-run-n8n" disabled><i class="fas fa-sync"></i> Run n8n Recovery</button>
+          <button class="lab-btn btn-ai-ops" id="btn-run-ai" disabled><i class="fas fa-brain"></i> Ask AI Ops Agent</button>
+          <button class="lab-btn btn-reset" id="btn-reset-lab"><i class="fas fa-undo"></i> Reset Lab</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Skills Section -->
   <section id="skills">
     <div class="section-header reveal">
-      <span class="section-num">02. Expertise</span>
+      <span class="section-num">03. Expertise</span>
       <h2 class="section-title">Skills & Capabilities</h2>
     </div>
     <div class="skills-grid">
@@ -406,7 +503,7 @@
   <!-- Experience Section -->
   <section id="experience">
     <div class="section-header reveal">
-      <span class="section-num">03. Career History</span>
+      <span class="section-num">04. Career History</span>
       <h2 class="section-title">Work Experience</h2>
     </div>
     <div class="timeline">
@@ -531,7 +628,7 @@
   <!-- Certifications Section -->
   <section id="certs">
     <div class="section-header reveal">
-      <span class="section-num">04. Credentials</span>
+      <span class="section-num">05. Credentials</span>
       <h2 class="section-title">Certifications</h2>
     </div>
     <div class="certs-grid">
@@ -662,7 +759,7 @@
   <!-- Education Section -->
   <section id="education">
     <div class="section-header reveal">
-      <span class="section-num">05. Academic Background</span>
+      <span class="section-num">06. Academic Background</span>
       <h2 class="section-title">Education</h2>
     </div>
     <div class="education-card reveal">
@@ -764,6 +861,10 @@
       </div>
     </div>
   </footer>
+
+  <!-- Magic Custom Cursor Dot and Outer Ring -->
+  <div id="magic-cursor-dot"></div>
+  <div id="magic-cursor-ring"></div>
 
   <!-- Core Javascript -->
   <script src="js/main.js"></script>

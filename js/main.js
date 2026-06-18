@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initStatsCounter();
   initBackToTop();
   initThemeToggle();
+  initTiltEffect();
+  initMagneticButtons();
+  initScrollProgress();
+  initMagicCursor();
+  initSpotlightEffect();
+  initResilienceLab();
 });
 
 /* ==========================================
@@ -51,6 +57,36 @@ function initNetworkCanvas() {
   window.addEventListener('resize', () => {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
+  });
+
+  // Shockwave burst of particles on click
+  window.addEventListener('click', (e) => {
+    if (window.innerWidth < 768) return; // Ignore on mobile
+    const count = 12;
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.4;
+      const speed = Math.random() * 2.5 + 1.5;
+      particles.push({
+        x: e.clientX,
+        y: e.clientY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        radius: Math.random() * 3.5 + 1.5,
+        alpha: 1,
+        decay: Math.random() * 0.025 + 0.015,
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.alpha -= this.decay;
+        },
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(37, 99, 235, ${this.alpha * 0.5})`;
+          ctx.fill();
+        }
+      });
+    }
   });
 
   class Particle {
@@ -133,14 +169,37 @@ function initNetworkCanvas() {
   function animate() {
     ctx.clearRect(0, 0, width, height);
     
+    // Draw mouse spotlight glow
+    if (mouse.x !== null && mouse.y !== null) {
+      const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, mouse.radius);
+      const isDark = document.body.classList.contains('dark-theme');
+      const opacity = isDark ? 0.08 : 0.04;
+      gradient.addColorStop(0, `rgba(37, 99, 235, ${opacity})`);
+      gradient.addColorStop(1, 'rgba(37, 99, 235, 0)');
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
     // Draw connections first (behind particles)
     drawConnections();
     
-    // Update and draw particles
-    particles.forEach((p) => {
-      p.update();
-      p.draw();
-    });
+    // Update and draw particles (regular and temporary shockwave)
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      if (p.alpha !== undefined) {
+        p.update();
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+        } else {
+          p.draw();
+        }
+      } else {
+        p.update();
+        p.draw();
+      }
+    }
 
     animationFrameId = requestAnimationFrame(animate);
   }
@@ -525,6 +584,8 @@ function initThemeToggle() {
 
   // Toggle listener
   toggleBtn.addEventListener('click', () => {
+    document.body.classList.add('theme-transitioning');
+    
     const isDark = document.body.classList.toggle('dark-theme');
     document.documentElement.classList.toggle('dark-theme', isDark);
     
@@ -533,5 +594,372 @@ function initThemeToggle() {
     
     // Sync icon visual state
     updateIcon(isDark);
+    
+    setTimeout(() => {
+      document.body.classList.remove('theme-transitioning');
+    }, 800);
   });
+}
+
+/* ==========================================
+   12. 3D Parallax Tilt Effect for Cards
+   ========================================== */
+function initTiltEffect() {
+  // Apply tilt to all feature cards
+  const cards = document.querySelectorAll('.highlight-card, .skill-category, .cert-card');
+  
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const xc = rect.width / 2;
+      const yc = rect.height / 2;
+      
+      // Calculate rotation angles (max 8 degrees tilt to keep it subtle)
+      const angleX = (yc - y) / yc * 8;
+      const angleY = (x - xc) / xc * 8;
+      
+      card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-8px) scale(1.02)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+
+/* ==========================================
+   13. Magnetic Pull Effect for Interactive Elements
+   ========================================== */
+function initMagneticButtons() {
+  const elements = document.querySelectorAll('.btn-primary, .btn-secondary, .cta-btn, .theme-toggle, .mobile-toggle, .back-to-top');
+  
+  elements.forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      // Move element slightly towards cursor (max 8px)
+      el.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+    });
+    
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+    });
+  });
+}
+
+/* ==========================================
+   14. Smooth Scroll Progress Bar
+   ========================================== */
+function initScrollProgress() {
+  const progress = document.getElementById('scroll-progress');
+  if (!progress) return;
+  
+  window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+    progress.style.width = scrolled + '%';
+  });
+}
+
+/* ==========================================
+   15. Interactive Custom Magic Cursor
+   ========================================== */
+function initMagicCursor() {
+  const dot = document.getElementById('magic-cursor-dot');
+  const ring = document.getElementById('magic-cursor-ring');
+  if (!dot || !ring) return;
+
+  // Only run custom cursor on devices with pointer/mouse
+  const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+  if (!isFinePointer) {
+    dot.style.display = 'none';
+    ring.style.display = 'none';
+    return;
+  }
+
+  document.body.classList.add('use-custom-cursor');
+
+  let ringX = 0, ringY = 0;
+  let targetX = 0, targetY = 0;
+  let cursorVisible = false;
+
+  window.addEventListener('mousemove', (e) => {
+    targetX = e.clientX;
+    targetY = e.clientY;
+    
+    if (!cursorVisible) {
+      dot.style.opacity = '1';
+      ring.style.opacity = '1';
+      cursorVisible = true;
+    }
+    
+    dot.style.transform = `translate3d(${targetX}px, ${targetY}px, 0) translate(-50%, -50%)`;
+  });
+
+  window.addEventListener('mouseenter', () => {
+    dot.style.opacity = '1';
+    ring.style.opacity = '1';
+    cursorVisible = true;
+  });
+
+  window.addEventListener('mouseleave', () => {
+    dot.style.opacity = '0';
+    ring.style.opacity = '0';
+    cursorVisible = false;
+  });
+
+  function updateRing() {
+    ringX += (targetX - ringX) * 0.15;
+    ringY += (targetY - ringY) * 0.15;
+    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+    requestAnimationFrame(updateRing);
+  }
+  requestAnimationFrame(updateRing);
+
+  // Selector list to scale visual hover cursor states
+  const hoverables = 'a, button, .timeline-body, .cert-card, .highlight-card, .skill-category, .lab-btn';
+  
+  document.body.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverables)) {
+      document.body.classList.add('cursor-hovering');
+    }
+  });
+
+  document.body.addEventListener('mouseout', (e) => {
+    if (!e.target.closest(hoverables)) {
+      document.body.classList.remove('cursor-hovering');
+    }
+  });
+}
+
+/* ==========================================
+   16. CSS Spotlight Shine Hover Coordinates tracker
+   ========================================== */
+function initSpotlightEffect() {
+  const cards = document.querySelectorAll('.highlight-card, .skill-category, .cert-card, .timeline-body, .education-card, .lab-monitor, .lab-terminal');
+  
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+}
+
+/* ==========================================
+   17. Interactive Resilience & Automation Lab Console
+   ========================================== */
+function initResilienceLab() {
+  const btnOutage = document.getElementById('btn-simulate-outage');
+  const btnZerto = document.getElementById('btn-run-zerto');
+  const btnN8n = document.getElementById('btn-run-n8n');
+  const btnAi = document.getElementById('btn-run-ai');
+  const btnReset = document.getElementById('btn-reset-lab');
+  const consoleLogs = document.getElementById('console-logs');
+  const slaValue = document.getElementById('sla-value');
+  
+  // LED node indicators
+  const ledVmware = document.getElementById('led-vmware');
+  const statusVmware = document.getElementById('status-vmware');
+  const ledDb = document.getElementById('led-db');
+  const statusDb = document.getElementById('status-db');
+  const ledN8n = document.getElementById('led-n8n');
+  const statusn8n = document.getElementById('status-n8n');
+  const ledAi = document.getElementById('led-ai');
+  const statusAi = document.getElementById('status-ai');
+  
+  const valRep = document.getElementById('val-rep');
+  const valRto = document.getElementById('val-rto');
+  
+  if (!btnOutage) return;
+
+  let sla = 99.98;
+  let slaInterval = null;
+  let simulationActive = false;
+
+  function writeLog(text, type = 'system') {
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const logLine = document.createElement('div');
+    logLine.className = `log-line ${type}-log`;
+    
+    let prefix = '> ';
+    if (type === 'warn') prefix = '[WARN] ';
+    if (type === 'critical') prefix = '[CRITICAL] ';
+    if (type === 'success') prefix = '[SUCCESS] ';
+    if (type === 'ai') prefix = '[AI OPS] ';
+    
+    logLine.textContent = `${prefix}${time} - ${text}`;
+    consoleLogs.appendChild(logLine);
+    consoleLogs.scrollTop = consoleLogs.scrollHeight;
+  }
+
+  btnOutage.addEventListener('click', () => {
+    if (simulationActive) return;
+    simulationActive = true;
+    
+    writeLog('Database node synchronization link down.', 'warn');
+    
+    setTimeout(() => {
+      ledDb.className = 'node-led led-red';
+      statusDb.textContent = 'CRITICAL';
+      statusDb.className = 'node-status status-critical';
+      
+      ledVmware.className = 'node-led led-yellow';
+      statusVmware.textContent = 'HIGH CPU LOAD';
+      statusVmware.className = 'node-status status-warning';
+      
+      valRto.textContent = 'Outage Active';
+      valRto.style.color = '#ef4444';
+      
+      writeLog('Primary Hypervisor host CPU capacity spike: 98% utilization.', 'critical');
+      writeLog('Production DB Cluster: heartbeat timed out. Status: CRITICAL.', 'critical');
+      
+      // Screen shake animation simulation
+      const labGrid = document.querySelector('.lab-grid');
+      labGrid.classList.add('outage-flash');
+      setTimeout(() => labGrid.classList.remove('outage-flash'), 1000);
+      
+      // SLA depletion interval
+      slaInterval = setInterval(() => {
+        sla -= (Math.random() * 0.01 + 0.005);
+        slaValue.textContent = sla.toFixed(4) + '%';
+        if (sla <= 99.1) clearInterval(slaInterval);
+      }, 300);
+      
+      writeLog('Continuity policy violated. SLA degradation active...', 'critical');
+      
+      btnOutage.disabled = true;
+      btnZerto.disabled = false;
+      btnN8n.disabled = false;
+      btnAi.disabled = false;
+      
+    }, 800);
+  });
+
+  btnZerto.addEventListener('click', () => {
+    disableActionButtons();
+    clearInterval(slaInterval);
+    
+    writeLog('Zerto Recovery Protocol triggered. Processing hot failover sequence.', 'system');
+    
+    setTimeout(() => writeLog('Verifying replica synchronization markers (RPO: 0.8s)...', 'system'), 400);
+    setTimeout(() => writeLog('Mounting datastores on secondary cluster recovery host...', 'system'), 800);
+    setTimeout(() => writeLog('Re-binding Active-Active network paths via BGP updates...', 'system'), 1200);
+    
+    setTimeout(() => {
+      ledDb.className = 'node-led led-blue';
+      statusDb.textContent = 'RECOVERED (DR)';
+      statusDb.className = 'node-status status-dr';
+      
+      ledVmware.className = 'node-led led-green';
+      statusVmware.textContent = 'Online';
+      statusVmware.className = 'node-status status-online';
+      
+      valRto.textContent = '3.2s RTO (Secured)';
+      valRto.style.color = 'var(--accent-teal)';
+      
+      writeLog('Production database traffic safely failed over to standby DC.', 'success');
+      writeLog('System SLA stabilized. Continuity fully restored. Duration: 3.2s.', 'success');
+    }, 1600);
+  });
+
+  btnN8n.addEventListener('click', () => {
+    disableActionButtons();
+    clearInterval(slaInterval);
+    
+    writeLog('n8n Healing webhook triggered. Scanning target processes...', 'system');
+    
+    setTimeout(() => writeLog('Container crash signature found inside db_prod daemon...', 'system'), 400);
+    setTimeout(() => writeLog('Executing auto-recovery instruction: docker restart db_prod...', 'system'), 800);
+    setTimeout(() => writeLog('Clearing locked virtual memory tables and swap partitions...', 'system'), 1200);
+    
+    setTimeout(() => {
+      ledDb.className = 'node-led led-green';
+      statusDb.textContent = 'Online';
+      statusDb.className = 'node-status status-online';
+      
+      ledVmware.className = 'node-led led-green';
+      statusVmware.textContent = 'Online';
+      statusVmware.className = 'node-status status-online';
+      
+      valRto.textContent = '2.1s RTO (Auto-Healed)';
+      valRto.style.color = 'var(--accent-emerald)';
+      
+      writeLog('PostgreSQL service responded nominal on host port 5432.', 'success');
+      writeLog('n8n self-healing workflow completed service check. Duration: 2.1s.', 'success');
+    }, 1600);
+  });
+
+  btnAi.addEventListener('click', () => {
+    disableActionButtons();
+    clearInterval(slaInterval);
+    
+    writeLog('AI Operations Agent initialized. Telemetry scan active...', 'ai');
+    
+    setTimeout(() => writeLog('AI Agent: Root cause identified as VM memory balloon conflict.', 'ai'), 400);
+    setTimeout(() => writeLog('AI Agent: Hot-adding 8GB physical memory allocation to host...', 'ai'), 800);
+    setTimeout(() => writeLog('Sending hot_expand_ram API call directly to ESXi endpoint...', 'ai'), 1200);
+    
+    setTimeout(() => {
+      ledDb.className = 'node-led led-teal';
+      statusDb.textContent = 'OPTIMIZED (AI)';
+      statusDb.className = 'node-status status-online';
+      
+      ledVmware.className = 'node-led led-green';
+      statusVmware.textContent = 'Online';
+      statusVmware.className = 'node-status status-online';
+      
+      valRto.textContent = '1.7s RTO (AI Managed)';
+      valRto.style.color = 'var(--accent-cyan)';
+      
+      writeLog('Host memory leaks resolved. Performance indicators nominal.', 'success');
+      writeLog('AI Auto-Mitigation confirmed recovery under strict SLAs. Duration: 1.7s.', 'success');
+    }, 1600);
+  });
+
+  btnReset.addEventListener('click', () => {
+    resetSimulator();
+  });
+
+  function disableActionButtons() {
+    btnZerto.disabled = true;
+    btnN8n.disabled = true;
+    btnAi.disabled = true;
+  }
+
+  function resetSimulator() {
+    clearInterval(slaInterval);
+    simulationActive = false;
+    sla = 99.98;
+    slaValue.textContent = '99.98%';
+    
+    ledDb.className = 'node-led led-green';
+    statusDb.textContent = 'Online';
+    statusDb.className = 'node-status status-online';
+    
+    ledVmware.className = 'node-led led-green';
+    statusVmware.textContent = 'Online';
+    statusVmware.className = 'node-status status-online';
+    
+    valRto.textContent = 'Nominal (Standby)';
+    valRto.style.color = '';
+    
+    consoleLogs.innerHTML = '';
+    writeLog('Resilience simulator initialized. System status: NOMINAL.', 'system');
+    writeLog('Monitoring replication pipelines, backup status, and host health...', 'system');
+    
+    btnOutage.disabled = false;
+    btnZerto.disabled = true;
+    btnN8n.disabled = true;
+    btnAi.disabled = true;
+  }
 }
