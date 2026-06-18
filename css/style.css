@@ -1585,3 +1585,13 @@ body.dark-theme .toast-msg {
   color: var(--text-primary);
   border: 1px solid var(--border-muted);
 }
+
+/* Header background dark mode adjustments (resolves light navbar in dark mode) */
+body.dark-theme header {
+  background: rgba(11, 17, 32, 0.75);
+  border-bottom-color: rgba(30, 41, 59, 0.4);
+}
+
+body.dark-theme header.scrolled {
+  background: rgba(11, 17, 32, 0.9);
+}
