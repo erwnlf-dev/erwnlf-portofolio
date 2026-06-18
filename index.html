@@ -34,6 +34,54 @@
   
   <!-- FontAwesome Icons (Local, self-contained) -->
   <link rel="stylesheet" href="css/all.min.css">
+
+  <!-- Theme Preload Script to Prevent Flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark-theme');
+        document.addEventListener('DOMContentLoaded', () => {
+          document.body.classList.add('dark-theme');
+        });
+      }
+    })();
+  </script>
+
+  <!-- JSON-LD Structured Schema Markup -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Erwin Alifiansyah",
+    "jobTitle": "IT Service Resilience Manager",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "PT Datacomm Diangraha"
+    },
+    "url": "https://erwnlf.dev",
+    "sameAs": [
+      "https://www.linkedin.com/in/erwinalif",
+      "https://github.com/erwnlf-dev"
+    ],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Bekasi",
+      "addressRegion": "West Java",
+      "addressCountry": "ID"
+    },
+    "knowsAbout": [
+      "Disaster Recovery",
+      "Business Continuity Planning",
+      "ITIL v4",
+      "Zerto Replication",
+      "Veeam Backup",
+      "n8n Workflow Automation",
+      "AI Agents",
+      "System Engineering"
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -45,19 +93,25 @@
     <div class="nav-container">
       <a href="#home" class="logo">erwnlf<span>.</span>dev</a>
       
-      <button class="mobile-toggle" aria-label="Toggle Menu">
-        <i class="fas fa-bars"></i>
-      </button>
-
-      <ul class="nav-links">
-        <li><a href="#home" class="active">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#certs">Certs</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li><a href="Profile.pdf" download class="cta-btn"><i class="fas fa-download" style="margin-right: 0.4rem;"></i>Resume</a></li>
-      </ul>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#certs">Certs</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="Erwin_Alifiansyah_CV_032026.pdf" download class="cta-btn"><i class="fas fa-download" style="margin-right: 0.4rem;"></i>Resume</a></li>
+        </ul>
+        
+        <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        
+        <button class="mobile-toggle" aria-label="Toggle Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -68,10 +122,10 @@
   <section id="home" class="hero">
     <div class="hero-content">
       <div class="hero-text">
-        <span class="hero-pretitle typewriter" data-text="IT Operations & Service Resilience Leader"></span>
-        <h1 class="hero-title">Architecting System Resilience. <span>Guaranteeing Business Continuity.</span></h1>
+        <span class="hero-pretitle typewriter" data-text="IT Resilience, Automation & AI Operations Leader"></span>
+        <h1 class="hero-title">Architecting Digital Resilience. <span>Automating Enterprise Continuity.</span></h1>
         <p class="hero-description">
-          With 7+ years of engineering and management expertise, I specialize in bulletproofing enterprise infrastructure. From high-availability clustering and disaster recovery (DR) to ITIL-aligned operations, I build and scale systems that stay online when it matters most.
+          With over 7 years of enterprise operations leadership, I design bulletproof, high-availability infrastructures and disaster recovery (DR) frameworks. By blending ITIL-aligned operations with intelligent <strong>n8n workflows</strong> and autonomous <strong>AI agent systems</strong>, I ensure systems stay online and operations scale automatically.
         </p>
         <div class="hero-key-metrics">
           <div class="metric-tag"><i class="fas fa-history"></i> 7+ Years IT Ops</div>
@@ -80,13 +134,13 @@
         </div>
         <div class="hero-buttons">
           <a href="#experience" class="btn-primary">Explore Experience</a>
-          <a href="Profile.pdf" download class="btn-secondary"><i class="fas fa-file-pdf" style="margin-right: 0.5rem;"></i>Download CV</a>
+          <a href="Erwin_Alifiansyah_CV_032026.pdf" download class="btn-secondary"><i class="fas fa-file-pdf" style="margin-right: 0.5rem;"></i>Download CV</a>
         </div>
       </div>
       <div class="hero-visual">
         <div class="avatar-wrapper">
           <div class="avatar-inner">
-            <img src="assets/avatar-placeholder.svg" alt="Erwin Alifiansyah Profile Outline">
+            <img src="assets/avatar.jpg" alt="Erwin Alifiansyah Professional Headshot">
           </div>
         </div>
       </div>
@@ -102,27 +156,34 @@
     <div class="about-grid">
       <div class="about-text reveal">
         <p>
-          I am a technical IT Operations & Service Resilience Leader with over 7 years of hands-on experience in building and safeguarding enterprise infrastructures. My career at <strong>PT Datacomm Diangraha</strong> is a testament to growth, where I evolved from resolving service desk tickets to designing robust system engineering architectures, and ultimately leading teams in critical change, problem, and resilience management.
+          I am a technical IT Operations & Resilience Leader with 7+ years of experience safeguarding enterprise infrastructures. Evolving from troubleshooting server environments to orchestrating high-availability systems and leading Change, Problem, and Resilience Management at <strong>PT Datacomm Diangraha</strong>, I specialize in keeping critical services uninterrupted.
         </p>
         <p>
-          What sets me apart is my unique bridge between physical communications and modern cloud environments. Armed with a Bachelor's degree in <strong>Telecommunication Engineering</strong> from <strong>Politeknik Negeri Jakarta</strong>, I apply core principles of signal integrity and transmission stability to high-availability virtualization (VMware, Zerto) and structured ITIL v4 frameworks.
+          My technical edge bridges structured engineering principles and modern cloud architectures. Leveraging a background in <strong>Telecommunication Engineering</strong> from <strong>Politeknik Negeri Jakarta</strong>, I translate complex network dynamics and transmission stability into resilient virtualization topologies (VMware, Zerto) and structured ITIL v4 operational frameworks.
         </p>
         <p>
-          I view system failure as a design challenge, not an inevitability. My focus lies in proactive capacity modeling, meticulous risk mitigation, and deep Root Cause Analysis (RCA) to translate operational failures into bulletproof system improvements.
+          I approach system failures as architectural optimization opportunities. Through proactive capacity modeling, deep Root Cause Analysis (RCA), and continuous risk assessment, I turn potential vulnerabilities into bulletproof infrastructure designs.
+        </p>
+        <p>
+          At the intersection of resilience and innovation, I design and build intelligent <strong>AI Projects</strong>, orchestrate autonomous <strong>AI Agents</strong>, and construct self-healing workflows via <strong>n8n automation</strong>. Leveraging <strong>vibe coding with AI</strong>, I combine developer agility with strict enterprise infrastructure standards.
         </p>
       </div>
       <div class="about-highlights">
         <div class="highlight-card reveal reveal-delay-1">
           <h3><i class="fas fa-shield-alt"></i> SLA Safeguarding</h3>
-          <p>Passionate about maintaining 99.9% uptime by architecting active-active redundancies and resilient failover solutions.</p>
+          <p>Architecting active-active redundancies, clustering, and resilient failover configurations to guarantee 99.9% system uptime.</p>
         </div>
         <div class="highlight-card reveal reveal-delay-2">
           <h3><i class="fas fa-sync-alt"></i> Continuous Improvement (PDCA)</h3>
-          <p>Driving operational excellence through structured change management, risk assessments, and internal audits.</p>
+          <p>Embedding ITIL v4 guidelines, ISO standards, and structured risk assessments to eliminate operational bottlenecks.</p>
         </div>
         <div class="highlight-card reveal reveal-delay-3">
           <h3><i class="fas fa-network-wired"></i> Unified Infrastructure</h3>
-          <p>Seamlessly integrating core network services (DDI) with modern enterprise virtualization and DR orchestration.</p>
+          <p>Integrating core network services (DDI) with enterprise hypervisors and modern multi-site replication engines.</p>
+        </div>
+        <div class="highlight-card reveal reveal-delay-4">
+          <h3><i class="fas fa-heartbeat"></i> DR & Continuity (ISO 22301)</h3>
+          <p>Orchestrating Disaster Recovery plans, optimizing RTO/RPO metrics, and establishing ISO 22301 Business Continuity standards.</p>
         </div>
       </div>
     </div>
@@ -136,7 +197,7 @@
         <div class="stat-label">Years Safeguarding Systems</div>
       </div>
       <div class="stat-item reveal reveal-delay-2">
-        <div class="stat-number" data-target="5">0</div>
+        <div class="stat-number" data-target="10">0</div>
         <div class="stat-label">Industry Credentials</div>
       </div>
       <div class="stat-item reveal reveal-delay-3">
@@ -160,20 +221,20 @@
       
       <!-- Category 1: Resilience & Continuity -->
       <div class="skill-category reveal reveal-delay-1">
-        <h3><i class="fas fa-server"></i> Resilience & Infrastructure</h3>
+        <h3><i class="fas fa-server"></i> DR & Resilience Infrastructure</h3>
         <div class="skill-list">
           <div class="skill-item">
             <div class="skill-info">
-              <span class="skill-name">Capacity Management</span>
-              <span class="skill-val">85%</span>
+              <span class="skill-name">Disaster Recovery Planning (DRP) & BCP</span>
+              <span class="skill-val">95%</span>
             </div>
             <div class="skill-bar-bg">
-              <div class="skill-bar-fg" data-val="85"></div>
+              <div class="skill-bar-fg" data-val="95"></div>
             </div>
           </div>
           <div class="skill-item">
             <div class="skill-info">
-              <span class="skill-name">Disaster Recovery (DR) & Backup</span>
+              <span class="skill-name">Zerto Continuous Data Protection (CDP)</span>
               <span class="skill-val">90%</span>
             </div>
             <div class="skill-bar-bg">
@@ -182,11 +243,20 @@
           </div>
           <div class="skill-item">
             <div class="skill-info">
-              <span class="skill-name">Virtualization & Zerto Replications</span>
-              <span class="skill-val">80%</span>
+              <span class="skill-name">Veeam Backup & Replication</span>
+              <span class="skill-val">85%</span>
             </div>
             <div class="skill-bar-bg">
-              <div class="skill-bar-fg" data-val="80"></div>
+              <div class="skill-bar-fg" data-val="85"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">RTO & RPO Target Optimization</span>
+              <span class="skill-val">90%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="90"></div>
             </div>
           </div>
           <div class="skill-item">
@@ -198,11 +268,63 @@
               <div class="skill-bar-fg" data-val="85"></div>
             </div>
           </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Capacity Management & Monitoring</span>
+              <span class="skill-val">85%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="85"></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Category 2: Management & Process -->
+      <!-- Category 2: System Engineering & OS -->
       <div class="skill-category reveal reveal-delay-2">
+        <h3><i class="fas fa-terminal"></i> System Engineering & OS</h3>
+        <div class="skill-list">
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">OS Administration (RHEL, Windows Server)</span>
+              <span class="skill-val">85%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="85"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Virtualization (VMware ESXi, vSphere)</span>
+              <span class="skill-val">80%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="80"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Core Network Services (DDI - DNS, DHCP, IPAM)</span>
+              <span class="skill-val">90%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="90"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">L2/L3 Diagnostic Troubleshooting</span>
+              <span class="skill-val">85%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="85"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 3: Management & Process -->
+      <div class="skill-category reveal reveal-delay-3">
         <h3><i class="fas fa-project-diagram"></i> Service Management</h3>
         <div class="skill-list">
           <div class="skill-item">
@@ -244,6 +366,40 @@
         </div>
       </div>
 
+      <!-- Category 4: AI & Automation -->
+      <div class="skill-category reveal reveal-delay-4">
+        <h3><i class="fas fa-robot"></i> AI & Automation</h3>
+        <div class="skill-list">
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">AI Projects & Agents Development</span>
+              <span class="skill-val">80%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="80"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Workflow Automation (n8n)</span>
+              <span class="skill-val">85%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="85"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Vibe Coding with AI</span>
+              <span class="skill-val">90%</span>
+            </div>
+            <div class="skill-bar-bg">
+              <div class="skill-bar-fg" data-val="90"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -270,8 +426,10 @@
           <ul>
             <li>Orchestrate capacity management and resource planning to ensure infrastructure scalability and cost efficiency.</li>
             <li>Enforce and safeguard SLAs (99.9% uptime) across hybrid cloud infrastructures and enterprise managed services.</li>
-            <li>Design, simulate, and refine Disaster Recovery (DR) and Business Continuity (BC) programs to mitigate risks.</li>
+            <li>Design, simulate, and refine Disaster Recovery (DR) and Business Continuity (BC) programs to improve operational resilience.</li>
             <li>Oversee enterprise backup strategies, multi-site replication, and automated failover testing using Zerto and Veeam.</li>
+            <li>Track service backlog and coordinate timely resolution with technical teams and stakeholders.</li>
+            <li>Maintain visibility into infrastructure health and service performance through reporting and follow-up actions.</li>
           </ul>
           <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--accent-cyan); font-family: var(--font-mono);">Click to read more details...</p>
         </div>
@@ -293,6 +451,8 @@
             <li>Spearheaded Change Management workflows, auditing high-risk infrastructure updates to minimize production downtime.</li>
             <li>Led Problem Management and Root Cause Analysis (RCA) sessions, preventing recurring incidents and establishing long-term fixes.</li>
             <li>Conducted comprehensive risk assessments for enterprise hardware, virtualization, and network configurations.</li>
+            <li>Worked closely with technical teams, service managers, and stakeholders to ensure smooth transitions and clear communication.</li>
+            <li>Prepared management reporting on change effectiveness, incident trends, and problem resolution progress.</li>
             <li>Ensured compliance with internal audits, ISO standards, and ITIL v4 framework across all operational workflows.</li>
           </ul>
           <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--accent-cyan); font-family: var(--font-mono);">Click to read more details...</p>
@@ -312,9 +472,10 @@
         </div>
         <div class="timeline-body">
           <ul>
-            <li>Coordinated scheduled maintenance windows, enforcing detailed rollback and validation procedures.</li>
-            <li>Embedded ITIL change management guidelines across production environments to ensure structural integrity.</li>
-            <li>Facilitated the Change Advisory Board (CAB), resolving scheduling conflicts and evaluating change impact.</li>
+            <li>Supported planning, scheduling, and governance of changes across IT systems and services.</li>
+            <li>Assessed implementation risk and potential service impact for proposed changes and requests.</li>
+            <li>Maintained accurate change records and ensured process compliance with internal standards and ITIL-aligned practice.</li>
+            <li>Coordinated service requests end-to-end to support timely fulfillment and resolution.</li>
           </ul>
         </div>
       </div>
@@ -334,6 +495,8 @@
           <ul>
             <li>Managed hybrid server environments, optimizing Red Hat Enterprise Linux (RHEL), Windows Server, and VMware ESXi.</li>
             <li>Deployed and integrated core DDI services (DNS Bind9, DHCP ISC Kea, IPAM) for major telecom service providers.</li>
+            <li>Developed and implemented system architectures to support integration of hardware, software, and network components.</li>
+            <li>Collaborated with cross-functional teams on system enhancement and infrastructure initiatives.</li>
             <li>Delivered L2/L3 troubleshooting for complex hardware failures, virtualization bottlenecks, and OS performance issues.</li>
           </ul>
           <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--accent-cyan); font-family: var(--font-mono);">Click to read more details...</p>
@@ -354,7 +517,9 @@
         <div class="timeline-body">
           <ul>
             <li>Served as the primary technical point of contact, resolving system-level incident tickets under strict SLA guidelines.</li>
-            <li>Diagnosed and classified hardware, software, and network incidents, escalating critical alerts to L2/L3 engineering teams.</li>
+            <li>Diagnosed incidents, escalated complex issues, and tracked progress to ensure timely resolution.</li>
+            <li>Worked with system engineers and IT teams to maintain consistent service quality and user communication.</li>
+            <li>Monitored system performance and provided status updates to users and stakeholders.</li>
             <li>Authored technical knowledge base articles and documented troubleshooting runbooks to accelerate resolution times.</li>
           </ul>
         </div>
@@ -378,7 +543,7 @@
           <span class="cert-badge">Core IT</span>
         </div>
         <div>
-          <h3 class="cert-name">ITIL 4 ® Foundation</h3>
+          <h3 class="cert-name">ITIL 4 Foundation</h3>
           <span class="cert-issuer">AXELOS / PeopleCert</span>
         </div>
       </div>
@@ -423,11 +588,71 @@
       <div class="cert-card reveal reveal-delay-5">
         <div class="cert-top">
           <i class="fas fa-cloud cert-icon"></i>
-          <span class="cert-badge">Automation</span>
+          <span class="cert-badge">Cloud & Backup</span>
         </div>
         <div>
-          <h3 class="cert-name">Cloud Tech Associate Automation</h3>
-          <span class="cert-issuer">Managed Services Cert</span>
+          <h3 class="cert-name">Cloud Tech Fundamental</h3>
+          <span class="cert-issuer">Acronis</span>
+        </div>
+      </div>
+
+      <!-- Cert 6 -->
+      <div class="cert-card reveal reveal-delay-1">
+        <div class="cert-top">
+          <i class="fas fa-clipboard-check cert-icon"></i>
+          <span class="cert-badge">Audit & Compliance</span>
+        </div>
+        <div>
+          <h3 class="cert-name">Internal Audit Training ISO 22301</h3>
+          <span class="cert-issuer">Bizplus.id (Based on ISO 19011:2018)</span>
+        </div>
+      </div>
+
+      <!-- Cert 7 -->
+      <div class="cert-card reveal reveal-delay-2">
+        <div class="cert-top">
+          <i class="fas fa-cloud-upload-alt cert-icon"></i>
+          <span class="cert-badge">DR Cloud</span>
+        </div>
+        <div>
+          <h3 class="cert-name">ZCP: Cloud Service Provider</h3>
+          <span class="cert-issuer">Zerto</span>
+        </div>
+      </div>
+
+      <!-- Cert 8 -->
+      <div class="cert-card reveal reveal-delay-3">
+        <div class="cert-top">
+          <i class="fas fa-user-shield cert-icon"></i>
+          <span class="cert-badge">Cybersecurity</span>
+        </div>
+        <div>
+          <h3 class="cert-name">Cybersecurity Infrastructure Assessment</h3>
+          <span class="cert-issuer">Palo Alto Networks</span>
+        </div>
+      </div>
+
+      <!-- Cert 9 -->
+      <div class="cert-card reveal reveal-delay-4">
+        <div class="cert-top">
+          <i class="fas fa-tools cert-icon"></i>
+          <span class="cert-badge">Infrastructure</span>
+        </div>
+        <div>
+          <h3 class="cert-name">CompTIA CNIP</h3>
+          <span class="cert-issuer">CompTIA</span>
+        </div>
+      </div>
+
+      <!-- Cert 10 -->
+      <div class="cert-card reveal reveal-delay-5">
+        <div class="cert-top">
+          <i class="fas fa-network-wired cert-icon"></i>
+          <span class="cert-badge">Networking</span>
+        </div>
+        <div>
+          <h3 class="cert-name">CompTIA Network+</h3>
+          <span class="cert-issuer">CompTIA</span>
         </div>
       </div>
 
@@ -460,11 +685,11 @@
         </p>
         
         <div class="contact-details">
-          <a href="mailto:erwinksk@gmail.com" class="contact-item">
+          <a href="mailto:erwnlf@gmail.com" class="contact-item">
             <div class="contact-icon"><i class="far fa-envelope"></i></div>
             <div>
               <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-family: var(--font-mono);">EMAIL</span>
-              <span>erwinksk@gmail.com</span>
+              <span>erwnlf@gmail.com</span>
             </div>
           </a>
           
@@ -535,7 +760,7 @@
       <div class="footer-socials">
         <a href="https://www.linkedin.com/in/erwinalif" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
         <a href="https://github.com/erwnlf-dev" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
-        <a href="mailto:erwinksk@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+        <a href="mailto:erwnlf@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
       </div>
     </div>
   </footer>

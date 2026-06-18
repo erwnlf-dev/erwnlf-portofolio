@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTypewriter();
   initStatsCounter();
   initBackToTop();
+  initThemeToggle();
 });
 
 /* ==========================================
@@ -265,8 +266,10 @@ function initModals() {
         <ul>
           <li><strong>Optimasi Kapasitas:</strong> Memantau tren performa dan memodelkan kapasitas resource (CPU, Memory, Storage) secara proaktif guna mendukung pertumbuhan bisnis klien tanpa hambatan.</li>
           <li><strong>Penjaminan SLA:</strong> Menjaga kepatuhan SLA layanan cloud dengan mengimplementasikan load balancing, clustering, dan arsitektur redundansi tinggi.</li>
-          <li><strong>Business Continuity & DR Plan:</strong> Menyusun taktik pemulihan bencana (Disaster Recovery) yang komprehensif, melakukan simulasi failover berkala, dan mereduksi RTO (Recovery Time Objective) serta RPO (Recovery Point Objective).</li>
+          <li><strong>Business Continuity & DR Plan:</strong> Menyusun taktik pemulihan bencana (Disaster Recovery) yang komprehensif, melakukan simulasi failover berkala, dan mereduksi RTO (Recovery Time Objective) serta RPO (Recovery Point Objective) untuk meningkatkan ketangguhan operasional.</li>
           <li><strong>Manajemen Proteksi Data:</strong> Mengelola siklus backup enterprise, replikasi offsite multi-lokasi, dan prosedur validasi pemulihan data menggunakan teknologi Zerto dan Veeam.</li>
+          <li><strong>Pengawasan Backlog & Koordinasi:</strong> Memantau backlog layanan dan berkoordinasi secara aktif dengan tim teknis serta pemangku kepentingan untuk penyelesaian masalah yang tepat waktu.</li>
+          <li><strong>Visibilitas Infrastruktur:</strong> Menjaga visibilitas kesehatan infrastruktur dan kinerja layanan melalui pelaporan berkala serta tindakan tindak lanjut yang diperlukan.</li>
         </ul>
       `
     },
@@ -278,6 +281,8 @@ function initModals() {
         <ul>
           <li><strong>Mitigasi Risiko Perubahan:</strong> Memimpin proses evaluasi dampak (impact assessment), perencanaan rollback, dan penjadwalan pemeliharaan sistem kritis guna mencegah terjadinya downtime yang tidak direncanakan.</li>
           <li><strong>Root Cause Analysis (RCA):</strong> Memfasilitasi sesi investigasi mendalam pasca-insiden untuk mengidentifikasi akar penyebab masalah utama, mendokumentasikan error yang diketahui (Known Errors), dan menerapkan perbaikan permanen.</li>
+          <li><strong>Kolaborasi Stakeholder:</strong> Bekerja erat dengan tim teknis, manajer layanan, dan pemangku kepentingan untuk memastikan transisi perubahan yang lancar dan komunikasi yang jelas.</li>
+          <li><strong>Pelaporan Manajemen:</strong> Menyusun laporan berkala bagi manajemen mengenai efektivitas perubahan, tren insiden, dan kemajuan penyelesaian masalah.</li>
           <li><strong>Kepatuhan Standar ITIL:</strong> Menyelaraskan proses tata kelola insiden, perubahan, dan masalah operasional dengan standar ITIL v4 dan audit kepatuhan ISO internal perusahaan.</li>
         </ul>
       `
@@ -290,6 +295,8 @@ function initModals() {
         <ul>
           <li><strong>Integrasi Jaringan Inti (DDI):</strong> Membangun dan mengintegrasikan layanan core network penunjang infrastruktur penting seperti DNS Bind9, DHCP ISC Kea, dan IPAM (IP Address Management) untuk operator telekomunikasi skala besar.</li>
           <li><strong>Virtualisasi & Manajemen OS:</strong> Mengelola server berbasis VMware ESXi, melakukan fine-tuning performa kernel Linux (RHEL/CentOS), serta menerapkan patch keamanan berkala untuk meminimalkan kerentanan sistem.</li>
+          <li><strong>Arsitektur Sistem:</strong> Merancang dan mengimplementasikan arsitektur sistem untuk mendukung integrasi komponen perangkat keras, perangkat lunak, dan jaringan.</li>
+          <li><strong>Kolaborasi Lintas Fungsi:</strong> Berkolaborasi dengan tim lintas fungsi dalam inisiatif peningkatan sistem dan optimalisasi infrastruktur.</li>
           <li><strong>Eskalasi Dukungan L2/L3:</strong> Menangani insiden kompleks tingkat lanjut yang melibatkan anomali sistem operasi, performa penyimpanan (storage bottleneck), dan kegagalan cluster server.</li>
         </ul>
       `
@@ -491,5 +498,40 @@ function initBackToTop() {
   
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+/* ==========================================
+   11. Theme Dark / Light Toggle Handler
+   ========================================== */
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('theme-toggle-btn');
+  if (!toggleBtn) return;
+  
+  const icon = toggleBtn.querySelector('i');
+  
+  // Helper to sync icon classes
+  function updateIcon(isDark) {
+    if (isDark) {
+      icon.className = 'fas fa-sun';
+    } else {
+      icon.className = 'fas fa-moon';
+    }
+  }
+
+  // Initial sync state based on preloaded body class
+  const isDarkInitial = document.body.classList.contains('dark-theme');
+  updateIcon(isDarkInitial);
+
+  // Toggle listener
+  toggleBtn.addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark-theme');
+    document.documentElement.classList.toggle('dark-theme', isDark);
+    
+    // Persist user selection
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    
+    // Sync icon visual state
+    updateIcon(isDark);
   });
 }
